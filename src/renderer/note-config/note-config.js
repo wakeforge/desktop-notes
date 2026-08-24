@@ -228,10 +228,10 @@ async function reload() {
 api.onRefresh(() => reload());
 
 // 静态文案初始翻译 + 语言切换时重渲染
-applyI18n(tr);
+api.applyI18n(api.t);
 api.onI18nChanged((loc) => {
   api.setLocale(loc);
-  applyI18n(tr);
+  api.applyI18n(api.t);
 });
 
 reload();

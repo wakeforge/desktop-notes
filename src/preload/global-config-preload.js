@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld('globalConfigAPI', {
   localeLabels: i18n.LOCALE_LABELS,
   formatRelTime: (iso) => i18n.formatRelTime(_locale, iso),
   formatCount: (n) => i18n.formatCount(_locale, n),
+  applyI18n: (root) => i18n.applyI18n(_t, root),
   onI18nChanged: (cb) => ipcRenderer.on('i18n:changed', (_e, loc) => cb(loc)),
   getSettings: () => ipcRenderer.invoke('settings:get'),
   updateSettings: (patch) => ipcRenderer.invoke('settings:update', patch),

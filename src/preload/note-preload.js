@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('noteAPI', {
   setLocale: (l) => { _locale = l; },
   formatRelTime: (iso) => i18n.formatRelTime(_locale, iso),
   formatCount: (n) => i18n.formatCount(_locale, n),
+  applyI18n: (root) => i18n.applyI18n(_t, root),
   onI18nChanged: (cb) => ipcRenderer.on('i18n:changed', (_e, loc) => cb(loc)),
   getSelf: () => ipcRenderer.invoke('note:self-get', noteId),
   saveLive: (patch) => ipcRenderer.invoke('note:save-live', noteId, patch),
