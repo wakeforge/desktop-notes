@@ -105,7 +105,6 @@ const messages = {
     'noteConfig.locate': '显示位置',
     'noteConfig.reset': '重置',
     'noteConfig.delete': '删除',
-    'noteConfig.close': '关闭',
     'noteConfig.resetConfirm': '重置外观为默认值？',
     'noteConfig.deleteConfirm': '确定删除这条便签？此操作不可撤销。',
 
@@ -216,7 +215,6 @@ const messages = {
     'noteConfig.locate': '顯示位置',
     'noteConfig.reset': '重設',
     'noteConfig.delete': '刪除',
-    'noteConfig.close': '關閉',
     'noteConfig.resetConfirm': '重設外觀為預設值？',
     'noteConfig.deleteConfirm': '確定刪除這條便簽？此操作不可撤銷。',
 
@@ -327,7 +325,6 @@ const messages = {
     'noteConfig.locate': 'Show location',
     'noteConfig.reset': 'Reset',
     'noteConfig.delete': 'Delete',
-    'noteConfig.close': 'Close',
     'noteConfig.resetConfirm': 'Reset appearance to defaults?',
     'noteConfig.deleteConfirm': 'Delete this note? This cannot be undone.',
 
@@ -438,7 +435,6 @@ const messages = {
     'noteConfig.locate': '位置を表示',
     'noteConfig.reset': 'リセット',
     'noteConfig.delete': '削除',
-    'noteConfig.close': '閉じる',
     'noteConfig.resetConfirm': '外観を既定値にリセットしますか？',
     'noteConfig.deleteConfirm': 'この付箋を削除しますか？元に戻せません。',
 
@@ -549,7 +545,6 @@ const messages = {
     'noteConfig.locate': '위치 표시',
     'noteConfig.reset': '초기화',
     'noteConfig.delete': '삭제',
-    'noteConfig.close': '닫기',
     'noteConfig.resetConfirm': '모양을 기본값으로 초기화할까요?',
     'noteConfig.deleteConfirm': '이 메모를 삭제할까요? 취소할 수 없습니다.',
 

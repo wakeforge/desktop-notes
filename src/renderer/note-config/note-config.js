@@ -33,7 +33,6 @@ const els = {
   hidden: document.getElementById('hidden'),
   alwaysOnTop: document.getElementById('alwaysOnTop'),
   locked: document.getElementById('locked'),
-  closeBtn: document.getElementById('closeBtn'),
   locateBtn: document.getElementById('locateBtn'),
   resetBtn: document.getElementById('resetBtn'),
   delBtn: document.getElementById('delBtn')
@@ -181,9 +180,6 @@ els.alwaysOnTop.addEventListener('change', () => {
   scheduleSave({ alwaysOnTop: els.alwaysOnTop.checked });
 });
 
-// 顶部关闭按钮
-els.closeBtn.addEventListener('click', () => api.closeWindow());
-
 els.locateBtn.addEventListener('click', () => api.locateNote(note.id));
 
 els.resetBtn.addEventListener('click', async () => {
@@ -205,7 +201,7 @@ els.delBtn.addEventListener('click', async () => {
   api.closeWindow();
 });
 
-// 底部关闭按钮已移除，弹窗仅由右上角 ✕ 关闭
+// 弹窗由原生窗口右上角 ✕ 关闭；closeWindow 仅用于删除便签后 / 便签不存在时程序化关闭
 
 /* ---------- 数据加载 ---------- */
 
