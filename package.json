@@ -17,7 +17,7 @@
   },
   "build": {
     "appId": "com.desktopnotes.app",
-    "productName": "桌面便签",
+    "productName": "desktop-notes",
     "copyright": "Copyright © 2026 wake",
     "files": [
       "src/**/*",
@@ -37,8 +37,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "桌面便签",
-      "artifactName": "${productName}-Setup-${version}.${ext}"
+      "shortcutName": "desktop-notes",
+      "artifactName": "${name}-Setup-${version}.${ext}"
     },
     "directories": {
       "output": "dist"

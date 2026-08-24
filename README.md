@@ -32,7 +32,7 @@ npm start
 
 ## 打包为安装程序（Windows）
 
-产物：`dist/桌面便签-Setup-0.1.0.exe`（NSIS 安装包，双击即装）。
+产物：`dist/desktop-notes-Setup-1.0.1.exe`（NSIS 安装包，双击即装）。
 
 ```bash
 npm run dist

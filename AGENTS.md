@@ -43,7 +43,7 @@
 - `src/renderer/global-config/global-config.js`：全局配置弹窗逻辑（即时保存）。
 - `src/preload/config-preload.js` / `note-preload.js` / `note-config-preload.js` / `global-config-preload.js`：`contextBridge` 暴露 `configAPI` / `noteAPI` / `noteConfigAPI` / `globalConfigAPI`，内部全部走 `ipcRenderer.invoke` / `ipcRenderer.on`。
 
-## 5. 数据模型（`notes.json`，位于 `%APPDATA%/桌面便签/notes.json`）
+## 5. 数据模型（`notes.json`，位于 `%APPDATA%/desktop-notes/notes.json`）
 
 ```jsonc
 {
@@ -95,8 +95,8 @@ app.whenReady()
 
 ## 7. 打包与构建（`package.json` → electron-builder）
 
-- `npm run dist` → `electron-builder --win --x64`，产物 NSIS：`dist/桌面便签-Setup-0.1.0.exe`。
-- NSIS 配置：`oneClick:false`、`perMachine:false`（当前用户安装）、可选安装目录、桌面+开始菜单快捷方式、`shortcutName: 桌面便签`。
+- `npm run dist` → `electron-builder --win --x64`，产物 NSIS：`dist/desktop-notes-Setup-1.0.1.exe`。
+- NSIS 配置：`oneClick:false`、`perMachine:false`（当前用户安装）、可选安装目录、桌面+开始菜单快捷方式、`shortcutName: desktop-notes`。
 - 不签名：`win.sign: scripts/no-sign.js`（无代码签名，个别杀软可能误报）。
 - `electron`/`electron-builder` 为 devDependencies；`files` 仅打包 `src/`、`assets/`、`package.json`。
 
