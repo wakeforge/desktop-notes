@@ -95,7 +95,7 @@ app.whenReady()
 
 ## 7. 打包与构建（`package.json` → electron-builder）
 
-- `npm run dist` → `electron-builder --win --x64`，产物 NSIS：`dist/desktop-notes-Setup-1.0.1.exe`。
+- `npm run dist` → `electron-builder --win --x64`，产物 NSIS：`dist/desktop-notes-Setup-1.0.2.exe`。
 - NSIS 配置：`oneClick:false`、`perMachine:false`（当前用户安装）、可选安装目录、桌面+开始菜单快捷方式、`shortcutName: desktop-notes`。
 - 不签名：`win.sign: scripts/no-sign.js`（无代码签名，个别杀软可能误报）。
 - `electron`/`electron-builder` 为 devDependencies；`files` 仅打包 `src/`、`assets/`、`package.json`。
