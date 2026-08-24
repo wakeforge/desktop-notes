@@ -1,0 +1,47 @@
+{
+  "name": "desktop-notes",
+  "version": "1.0.1",
+  "description": "桌面便签：笔记嵌入桌面、点击穿透、只能由配置窗口管理",
+  "main": "src/main/main.js",
+  "author": "wake",
+  "license": "MIT",
+  "scripts": {
+    "start": "node scripts/start.js",
+    "start:direct": "electron .",
+    "dist": "electron-builder --win --x64",
+    "icon": "node scripts/gen-icon-ico.js"
+  },
+  "devDependencies": {
+    "electron": "^32.2.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.desktopnotes.app",
+    "productName": "桌面便签",
+    "copyright": "Copyright © 2026 wake",
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.ico",
+      "sign": "scripts/no-sign.js"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "桌面便签",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  }
+}

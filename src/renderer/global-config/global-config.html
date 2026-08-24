@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+  <link rel="stylesheet" href="global-config.css" />
+  <title>全局配置</title>
+</head>
+<body>
+  <div class="modal">
+    <header class="modal-head">
+      <h2>全局配置</h2>
+      <button id="closeBtn" class="close-btn" title="关闭">✕</button>
+    </header>
+
+    <div class="modal-body">
+      <section class="field-group">
+        <div class="row">
+          <div class="row-text">
+            <span class="row-title">开机启动</span>
+            <span class="row-desc">登录 Windows 后自动运行桌面便签</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="launchOnStartup" />
+            <span class="track"><span class="thumb"></span></span>
+          </label>
+        </div>
+      </section>
+
+      <section class="field-group">
+        <label class="field-label">主题</label>
+        <div class="seg" id="themeSeg">
+          <button data-theme="light">浅色</button>
+          <button data-theme="dark">深色</button>
+          <button data-theme="system">跟随系统</button>
+        </div>
+        <p class="hint">切换后所有配置窗口即时生效</p>
+      </section>
+
+      <section class="field-group">
+        <label class="field-label">新便签默认值</label>
+
+        <div class="row">
+          <div class="row-text">
+            <span class="row-title">默认字号</span>
+            <span class="row-desc">新建文本便签的初始字号</span>
+          </div>
+          <input type="number" id="defaultFontSize" min="10" max="72" class="num" />
+        </div>
+
+        <div class="row col">
+          <div class="row-text">
+            <span class="row-title">默认透明度 <span class="val" id="opacityVal">95%</span></span>
+            <span class="row-desc">新建便签的初始透明度</span>
+          </div>
+          <input type="range" id="defaultOpacity" min="20" max="100" step="1" class="range" />
+        </div>
+
+        <div class="row">
+          <div class="row-text">
+            <span class="row-title">默认背景色</span>
+          </div>
+          <label class="color-pick">
+            <input type="color" id="defaultBgColor" />
+            <span class="swatch" id="bgSwatch"></span>
+          </label>
+        </div>
+
+        <div class="row">
+          <div class="row-text">
+            <span class="row-title">默认文字色</span>
+          </div>
+          <label class="color-pick">
+            <input type="color" id="defaultTextColor" />
+            <span class="swatch" id="textSwatch"></span>
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <footer class="modal-foot">
+      <span class="foot-hint">设置即时保存</span>
+    </footer>
+  </div>
+
+  <script src="global-config.js"></script>
+</body>
+</html>

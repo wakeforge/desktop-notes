@@ -1,0 +1,133 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+  user-select: none;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #FFF7B2;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  background: rgba(0, 0, 0, 0.06);
+  -webkit-app-region: drag;
+  flex: 0 0 auto;
+}
+
+/* 工具栏显隐由渲染层按模式/锁定态用 hidden 控制 */
+.toolbar[hidden] { display: none !important; }
+
+.toolbar button,
+.toolbar input[type="color"] {
+  -webkit-app-region: no-drag;
+  border: none;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  width: 24px;
+  height: 22px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+.toolbar input[type="color"] { padding: 0; width: 26px; }
+.toolbar button:hover { background: rgba(255, 255, 255, 0.9); }
+
+.url-input {
+  -webkit-app-region: no-drag;
+  flex: 1 1 auto;
+  min-width: 60px;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.85);
+}
+#goBtn, #reloadBtn {
+  -webkit-app-region: no-drag;
+  width: auto !important;
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.drag-handle {
+  -webkit-app-region: drag;
+  cursor: move;
+  padding: 0 4px;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+}
+
+.lock-btn {
+  margin-left: auto;
+  width: auto !important;
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.content {
+  flex: 1 1 auto;
+  padding: 8px 10px;
+  overflow: auto;
+  font-size: 14px;
+  color: #222;
+  line-height: 1.5;
+  word-break: break-word;
+  outline: none;
+}
+.content[hidden] { display: none; }
+
+.webview {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+  overflow: hidden;
+}
+.webview[hidden] { display: none !important; }
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+  margin: 4px 0;
+}
+
+.card.unlocked .content {
+  user-select: text;
+  cursor: text;
+}
+
+.content ul { padding-left: 18px; }
+.content a { color: #1a6fd0; }
+
+/* 网页便签：内嵌页滚动条隐藏（宿主层） */
+.webview::-webkit-scrollbar { display: none; }
+/* 锁定态：webview 完全不可交互（双保险，主进程已做点击穿透） */
+.card.locked .webview { pointer-events: none; }
+/* 网页便签工具栏浮层覆盖在网页之上，webview 始终满高，锁定/解锁不跳变 */
+.card.mode-web .web-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
