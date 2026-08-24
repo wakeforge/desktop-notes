@@ -2,3 +2,5 @@ node_modules/
 dist/
 *.log
 /.workbuddy
+/wcs_verify
+/wcs_extract
