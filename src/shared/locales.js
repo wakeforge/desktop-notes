@@ -36,8 +36,6 @@ const messages = {
     'dlg.image': '图片',
 
     'config.subtitle': '主窗口',
-    'config.calibrate': '校准',
-    'config.calibrateTip': '重新校准所有便签到屏幕可见区',
     'config.globalConfig': '全局配置',
     'config.newNote': '+ 新建便签',
     'config.newTextNote': '新建文本便签',
@@ -149,8 +147,6 @@ const messages = {
     'dlg.image': '圖片',
 
     'config.subtitle': '主視窗',
-    'config.calibrate': '校正',
-    'config.calibrateTip': '重新校正所有便簽到螢幕可見區',
     'config.globalConfig': '全域設定',
     'config.newNote': '+ 新建便簽',
     'config.newTextNote': '新建文字便簽',
@@ -262,8 +258,6 @@ const messages = {
     'dlg.image': 'Images',
 
     'config.subtitle': 'Main window',
-    'config.calibrate': 'Calibrate',
-    'config.calibrateTip': 'Recalibrate all notes to the visible screen area',
     'config.globalConfig': 'Global settings',
     'config.newNote': '+ New note',
     'config.newTextNote': 'New text note',
@@ -375,8 +369,6 @@ const messages = {
     'dlg.image': '画像',
 
     'config.subtitle': 'メインウィンドウ',
-    'config.calibrate': '位置調整',
-    'config.calibrateTip': 'すべての付箋を画面の表示領域に再配置',
     'config.globalConfig': '全体設定',
     'config.newNote': '+ 新規付箋',
     'config.newTextNote': '新規テキスト付箋',
@@ -488,8 +480,6 @@ const messages = {
     'dlg.image': '이미지',
 
     'config.subtitle': '메인 창',
-    'config.calibrate': '위치 조정',
-    'config.calibrateTip': '모든 메모를 화면 표시 영역으로 재배치',
     'config.globalConfig': '전체 설정',
     'config.newNote': '+ 새 메모',
     'config.newTextNote': '새 텍스트 메모',

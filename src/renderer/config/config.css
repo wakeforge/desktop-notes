@@ -71,8 +71,6 @@ button {
 button:hover { background: var(--hover); }
 button.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
 button.primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
-button.ghost-btn { border-color: transparent; background: transparent; color: var(--text-2); }
-button.ghost-btn:hover { background: var(--hover); color: var(--text); }
 button.icon-btn { padding: 6px; border-color: transparent; background: transparent; color: var(--text-2); display: inline-flex; align-items: center; justify-content: center; }
 button.icon-btn:hover { background: var(--hover); color: var(--text); }
 

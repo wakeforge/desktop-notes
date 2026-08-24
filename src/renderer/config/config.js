@@ -21,7 +21,6 @@ const els = {
   newMenu: document.getElementById('newMenu'),
   search: document.getElementById('searchInput'),
   sort: document.getElementById('sortSel'),
-  calibrate: document.getElementById('calibrateBtn'),
   globalCfg: document.getElementById('globalCfgBtn'),
   cardMenu: document.getElementById('cardMenu')
 };
@@ -245,12 +244,6 @@ els.search.addEventListener('input', () => {
 els.sort.addEventListener('change', () => {
   sortMode = els.sort.value;
   renderCards();
-});
-
-// 校准：重新落位所有便签到可见区
-els.calibrate.addEventListener('click', async () => {
-  await api.recalibrate();
-  await refresh();
 });
 
 // 全局配置：打开独立弹窗

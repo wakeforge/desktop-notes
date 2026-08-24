@@ -287,21 +287,9 @@ ipcMain.handle('global-config:open', () => {
 });
 
 // 全局配置弹窗自身请求关闭
-ipcMain.on('global-config:close', (e) => {
-  wm.closeGlobalConfigForSender(e.sender);
-});
-
 // 在桌面定位（闪一下）某便签
 ipcMain.handle('note:locate', (_e, id) => {
   wm.locateNote(id);
-  return true;
-});
-
-// 重新校准所有便签到可见区
-ipcMain.handle('notes:recalibrate', () => {
-  wm.recalibrateAll();
-  wm.broadcastConfig();
-  trayModule.refresh();
   return true;
 });
 

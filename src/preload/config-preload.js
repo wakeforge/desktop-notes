@@ -50,7 +50,5 @@ contextBridge.exposeInMainWorld('configAPI', {
   openNoteConfig: (id) => ipcRenderer.invoke('note-config:open', id),
   // 打开全局配置弹窗
   openGlobalConfig: () => ipcRenderer.invoke('global-config:open'),
-  // 重新校准所有便签到可见区
-  recalibrate: () => ipcRenderer.invoke('notes:recalibrate'),
   onRefresh: (cb) => ipcRenderer.on('config:refresh', () => cb())
 });

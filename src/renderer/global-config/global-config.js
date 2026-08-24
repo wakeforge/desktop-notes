@@ -4,7 +4,6 @@ const api = window.globalConfigAPI;
 const tr = window.globalConfigAPI.t;
 
 const els = {
-  closeBtn: document.getElementById('closeBtn'),
   launchOnStartup: document.getElementById('launchOnStartup'),
   langSel: document.getElementById('langSel'),
   themeSeg: document.getElementById('themeSeg'),
@@ -84,8 +83,6 @@ function toHex(c) {
 }
 
 /* ---------- 事件（即时保存） ---------- */
-
-els.closeBtn.addEventListener('click', () => api.closeWindow());
 
 els.langSel.addEventListener('change', () => {
   if (loading) return;

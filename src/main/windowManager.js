@@ -326,14 +326,6 @@ function openGlobalConfigWindow() {
   return globalConfigWindow;
 }
 
-function closeGlobalConfigForSender(sender) {
-  if (globalConfigWindow && !globalConfigWindow.isDestroyed() &&
-      globalConfigWindow.webContents === sender) {
-    globalConfigWindow.close();
-    globalConfigWindow = null;
-  }
-}
-
 /* ---------------- 定位 / 全屏 / 校准 ---------------- */
 
 // 让桌面便签闪一下，方便用户在桌面找到它
@@ -354,25 +346,6 @@ function locateNote(noteId) {
   }, 1500);
 }
 
-// 重新校准所有便签到可见区
-function recalibrateAll() {
-  for (const note of store.getNotes()) {
-    const pos = clampToScreen({
-      x: note.absX ?? 0,
-      y: note.absY ?? 0,
-      width: note.width || 240,
-      height: note.height || 160
-    });
-    if (pos.x !== Math.round(note.absX ?? 0) || pos.y !== Math.round(note.absY ?? 0)) {
-      store.updateNote(note.id, { absX: pos.x, absY: pos.y });
-      const win = noteWindows.get(note.id);
-      if (win && !win.isDestroyed()) {
-        win.setBounds({ x: pos.x, y: pos.y, width: note.width || 240, height: note.height || 160 });
-      }
-    }
-  }
-}
-
 module.exports = {
   createNoteWindow,
   reloadNote,
@@ -391,7 +364,5 @@ module.exports = {
   openNoteConfigWindow,
   closeNoteConfigForSender,
   openGlobalConfigWindow,
-  closeGlobalConfigForSender,
-  locateNote,
-  recalibrateAll
+  locateNote
 };

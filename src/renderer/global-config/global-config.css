@@ -56,28 +56,6 @@ body {
   background: var(--surface);
 }
 
-/* ---- head ---- */
-.modal-head {
-  flex: 0 0 auto;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px 0 18px;
-  border-bottom: 1px solid var(--border);
-}
-.modal-head h2 { font-size: 14px; font-weight: 600; }
-.close-btn {
-  border: none;
-  background: transparent;
-  color: var(--text-2);
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 15px;
-  cursor: pointer;
-}
-.close-btn:hover { background: var(--hover); color: var(--text); }
-
 /* ---- body ---- */
 .modal-body {
   flex: 1 1 auto;
