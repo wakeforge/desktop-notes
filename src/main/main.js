@@ -6,6 +6,12 @@ const { app, ipcMain, screen, protocol, clipboard, dialog, nativeTheme } = requi
 const store = require('./store');
 const wm = require('./windowManager');
 const trayModule = require('./tray');
+const i18n = require('../shared/locales');
+
+// 主进程侧当前生效语言（供窗口标题、托盘、原生对话框使用）
+function currentLocale() {
+  return i18n.resolveLocale(store.getSettings().language, app.getLocale());
+}
 
 // 图片落地目录：userData/note-imgs/<noteId>/<file>
 const IMG_ROOT = path.join(app.getPath('userData'), 'note-imgs');
@@ -198,6 +204,10 @@ ipcMain.handle('settings:update', (_e, patch) => {
   const s = store.updateSettings(patch);
   if ('launchOnStartup' in patch) applyLaunchOnStartup(s.launchOnStartup);
   if ('theme' in patch) applyTheme(s.theme);
+  if ('language' in patch) {
+    trayModule.refresh();
+    wm.broadcastI18n();
+  }
   return s;
 });
 
@@ -214,7 +224,9 @@ ipcMain.handle('displays:list', () => {
     isPrimary: d.id === primary.id,
     bounds: d.bounds,
     workArea: d.workArea,
-    label: `屏幕 ${i + 1}${d.id === primary.id ? '（主）' : ''} · ${d.size.width}×${d.size.height}`
+    label: i18n.t(currentLocale(), 'display.label', { n: i + 1 }) +
+      (d.id === primary.id ? i18n.t(currentLocale(), 'display.primary') : '') +
+      ` · ${d.size.width}×${d.size.height}`
   }));
 });
 
@@ -287,7 +299,7 @@ ipcMain.handle('notes:recalibrate', () => {
 ipcMain.handle('note:pick-image', async (_e, id) => {
   const res = await dialog.showOpenDialog({
     properties: ['openFile'],
-    filters: [{ name: '图片', extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'] }]
+    filters: [{ name: i18n.t(currentLocale(), 'dlg.image'), extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'] }]
   });
   if (res.canceled || !res.filePaths || !res.filePaths.length) return null;
   const p = res.filePaths[0];

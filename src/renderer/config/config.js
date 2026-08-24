@@ -1,6 +1,8 @@
 'use strict';
 
 const api = window.configAPI;
+const tr = window.configAPI.t;
+let locale = window.configAPI.locale;
 
 /* ---------- 主题跟随（nativeTheme.themeSource 驱动 prefers-color-scheme） ---------- */
 
@@ -38,35 +40,23 @@ function stripText(html) {
 }
 
 function cardTitle(n) {
-  if (n.type === 'web') return (n.url || '').trim() || '网页便签';
-  return stripText(n.contentHtml) || '空便签';
+  if (n.type === 'web') return (n.url || '').trim() || tr('config.webNote');
+  return stripText(n.contentHtml) || tr('config.emptyNote');
 }
 
 function cardPreview(n) {
-  if (n.type === 'web') return '🌐 ' + ((n.url || '').trim() || '未设置网址');
-  return stripText(n.contentHtml) || '（空内容）';
+  if (n.type === 'web') return '🌐 ' + ((n.url || '').trim() || tr('config.noUrl'));
+  return stripText(n.contentHtml) || tr('config.emptyContent');
 }
 
 function charCount(n) {
   if (n.type === 'web') return '';
-  const t = stripText(n.contentHtml);
-  return t.length + ' 字';
+  const text = stripText(n.contentHtml);
+  return api.formatCount(text.length);
 }
 
 function relTime(iso) {
-  if (!iso) return '';
-  const t = new Date(iso).getTime();
-  if (isNaN(t)) return '';
-  const diff = Date.now() - t;
-  const m = Math.floor(diff / 60000);
-  if (m < 1) return '刚刚';
-  if (m < 60) return m + ' 分钟前';
-  const h = Math.floor(m / 60);
-  if (h < 24) return h + ' 小时前';
-  const d = Math.floor(h / 24);
-  if (d < 30) return d + ' 天前';
-  const dt = new Date(t);
-  return (dt.getMonth() + 1) + '-' + dt.getDate();
+  return api.formatRelTime(iso);
 }
 
 function escapeHtml(s) {
@@ -101,11 +91,11 @@ function renderCards() {
     els.grid.innerHTML = '';
     els.empty.hidden = notes.length > 0;
     if (notes.length === 0) {
-      els.empty.querySelector('.empty-title').textContent = '还没有便签';
-      els.empty.querySelector('.empty-hint').textContent = '点上方「+ 新建便签」开始';
+      els.empty.querySelector('.empty-title').textContent = tr('config.emptyTitle');
+      els.empty.querySelector('.empty-hint').textContent = tr('config.emptyHint');
     } else {
-      els.empty.querySelector('.empty-title').textContent = '没有匹配的便签';
-      els.empty.querySelector('.empty-hint').textContent = '换个关键词试试';
+      els.empty.querySelector('.empty-title').textContent = tr('config.emptyNoMatch');
+      els.empty.querySelector('.empty-hint').textContent = tr('config.emptyNoMatchHint');
     }
     return;
   }
@@ -124,11 +114,11 @@ function renderCards() {
           <div class="card-title-row">
             <span class="card-title" title="${escapeHtml(cardTitle(n))}">${escapeHtml(cardTitle(n))}</span>
             ${isWeb ? '<span class="badge-web">WEB</span>' : ''}
-            <button class="card-more" data-more="${escapeHtml(n.id)}" title="更多操作">⋯</button>
+            <button class="card-more" data-more="${escapeHtml(n.id)}" title="${tr('config.moreActions')}">⋯</button>
           </div>
           <div class="card-preview">${escapeHtml(cardPreview(n))}</div>
           <div class="card-meta">
-            <span class="dot${hidden ? ' off' : ''}" title="${hidden ? '已隐藏' : '显示中'}"></span>
+            <span class="dot${hidden ? ' off' : ''}" title="${hidden ? tr('config.hidden') : tr('config.shown')}"></span>
             <span>#${idx}</span>
             ${charCount(n) ? `<span class="sep">·</span><span>${charCount(n)}</span>` : ''}
             <span class="sep">·</span>
@@ -190,7 +180,7 @@ async function execMenuAction(act) {
       await refresh();
       break;
     case 'del':
-      if (!confirm('确定删除这条便签？此操作不可撤销。')) return;
+      if (!confirm(tr('config.confirmDelete'))) return;
       await api.deleteNote(id);
       await refresh();
       break;
@@ -269,5 +259,14 @@ els.globalCfg.addEventListener('click', () => {
 });
 
 api.onRefresh(() => refresh());
+
+// 静态文案初始翻译 + 语言切换时重渲染
+applyI18n(tr);
+api.onI18nChanged((loc) => {
+  locale = loc;
+  api.setLocale(loc);
+  applyI18n(tr);
+  renderCards();
+});
 
 refresh();

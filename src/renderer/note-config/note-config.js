@@ -1,6 +1,7 @@
 'use strict';
 
 const api = window.noteConfigAPI;
+const tr = window.noteConfigAPI.t;
 
 const id = new URLSearchParams(location.search).get('id');
 
@@ -186,7 +187,7 @@ els.closeBtn.addEventListener('click', () => api.closeWindow());
 els.locateBtn.addEventListener('click', () => api.locateNote(note.id));
 
 els.resetBtn.addEventListener('click', async () => {
-  if (!confirm('重置外观为默认值？')) return;
+  if (!confirm(tr('noteConfig.resetConfirm'))) return;
   const patch = {
     bgColor: defaults.defaultBgColor || '#FFF7B2',
     textColor: defaults.defaultTextColor || '#222222',
@@ -199,7 +200,7 @@ els.resetBtn.addEventListener('click', async () => {
 });
 
 els.delBtn.addEventListener('click', async () => {
-  if (!confirm('确定删除这条便签？此操作不可撤销。')) return;
+  if (!confirm(tr('noteConfig.deleteConfirm'))) return;
   await api.deleteNote(note.id);
   api.closeWindow();
 });
@@ -225,4 +226,12 @@ async function reload() {
 }
 
 api.onRefresh(() => reload());
+
+// 静态文案初始翻译 + 语言切换时重渲染
+applyI18n(tr);
+api.onI18nChanged((loc) => {
+  api.setLocale(loc);
+  applyI18n(tr);
+});
+
 reload();

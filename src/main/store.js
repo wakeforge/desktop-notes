@@ -18,7 +18,8 @@ const DEFAULT_DATA = {
     defaultTextColor: '#222222',
     defaultFontSize: 14,
     defaultOpacity: 0.95,
-    theme: 'system' // 'light' | 'dark' | 'system'
+    theme: 'system', // 'light' | 'dark' | 'system'
+    language: 'auto' // 'auto' 跟随系统；否则为受支持的语言代码（见 src/shared/locales.js）
   },
   notes: []
 };

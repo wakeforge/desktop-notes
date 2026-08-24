@@ -3,6 +3,8 @@
 const ALLOWED_TAGS = ['P', 'BR', 'B', 'STRONG', 'I', 'EM', 'U', 'UL', 'OL', 'LI', 'A', 'SPAN', 'DIV', 'FONT', 'IMG'];
 const ALLOWED_ATTR = ['href', 'color', 'style', 'src', 'alt', 'width', 'height'];
 
+const tr = window.noteAPI.t;
+
 function sanitize(html) {
   const tpl = document.createElement('template');
   tpl.innerHTML = String(html || '');
@@ -98,12 +100,12 @@ function setLockUI(isLocked) {
     textToolbar.hidden = isLocked;
     webToolbar.hidden = true;
     content.contentEditable = isLocked ? 'false' : 'true';
-    lockBtn.textContent = isLocked ? '锁定' : '完成';
+    lockBtn.textContent = isLocked ? tr('note.lock') : tr('note.done');
     if (!isLocked) content.focus();
   } else {
     webToolbar.hidden = isLocked;
     textToolbar.hidden = true;
-    webLockBtn.textContent = isLocked ? '锁定' : '完成';
+    webLockBtn.textContent = isLocked ? tr('note.lock') : tr('note.done');
     // webview 始终可见；锁定=点击穿透（无法操作），解锁=可交互
     if (isLocked) { try { webview.blur(); } catch (_) {} }
   }
@@ -172,7 +174,7 @@ document.querySelectorAll('.text-toolbar button[data-cmd]').forEach((btn) => {
       return;
     }
     if (cmd === 'createLink') {
-      const url = prompt('输入链接地址：', 'https://');
+      const url = prompt(tr('note.linkPrompt'), 'https://');
       if (url) document.execCommand('createLink', false, url);
     } else {
       document.execCommand(cmd, false, null);
@@ -247,4 +249,11 @@ window.noteAPI.onData((data) => {
   setLockUI(data.locked !== false);
 });
 
+window.noteAPI.onI18nChanged((loc) => {
+  window.noteAPI.setLocale(loc);
+  applyI18n(tr);
+  setLockUI(locked);
+});
+
+applyI18n(tr);
 init();

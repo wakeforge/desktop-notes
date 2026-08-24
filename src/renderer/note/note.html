@@ -11,23 +11,23 @@
   <div id="card" class="card locked">
     <!-- 文本便签工具栏 -->
     <div id="toolbar" class="toolbar text-toolbar" hidden>
-      <span class="drag-handle" title="拖动">⠿</span>
-      <button data-cmd="bold" title="加粗"><b>B</b></button>
-      <button data-cmd="italic" title="斜体"><i>I</i></button>
-      <button data-cmd="insertUnorderedList" title="列表">•</button>
-      <button data-cmd="createLink" title="链接">🔗</button>
-      <button data-cmd="insertImage" title="插入图片">🖼️</button>
-      <input type="color" id="fg" title="文字色" />
-      <button id="lockBtn" class="lock-btn no-drag" title="锁定">锁定</button>
+      <span class="drag-handle" data-i18n-title="note.drag" title="拖动">⠿</span>
+      <button data-cmd="bold" data-i18n-title="note.bold" title="加粗"><b>B</b></button>
+      <button data-cmd="italic" data-i18n-title="note.italic" title="斜体"><i>I</i></button>
+      <button data-cmd="insertUnorderedList" data-i18n-title="note.list" title="列表">•</button>
+      <button data-cmd="createLink" data-i18n-title="note.link" title="链接">🔗</button>
+      <button data-cmd="insertImage" data-i18n-title="note.image" title="插入图片">🖼️</button>
+      <input type="color" id="fg" data-i18n-title="note.textColor" title="文字色" />
+      <button id="lockBtn" class="lock-btn no-drag" data-i18n="note.lock" data-i18n-title="note.lock" title="锁定">锁定</button>
     </div>
 
     <!-- 网页便签工具栏 -->
     <div id="webToolbar" class="toolbar web-toolbar" hidden>
-      <span class="drag-handle" title="拖动">⠿</span>
-      <input type="text" id="urlInput" class="url-input" placeholder="输入网址，如 https://…" />
-      <button id="goBtn" class="no-drag" title="前往">前往</button>
-      <button id="reloadBtn" class="no-drag" title="刷新">⟳</button>
-      <button id="webLockBtn" class="lock-btn no-drag" title="锁定">锁定</button>
+      <span class="drag-handle" data-i18n-title="note.drag" title="拖动">⠿</span>
+      <input type="text" id="urlInput" class="url-input" data-i18n-placeholder="note.urlPlaceholder" placeholder="输入网址，如 https://…" />
+      <button id="goBtn" class="no-drag" data-i18n="note.go" data-i18n-title="note.go" title="前往">前往</button>
+      <button id="reloadBtn" class="no-drag" data-i18n="note.reload" data-i18n-title="note.reload" title="刷新">⟳</button>
+      <button id="webLockBtn" class="lock-btn no-drag" data-i18n="note.lock" data-i18n-title="note.lock" title="锁定">锁定</button>
     </div>
 
     <!-- 文本编辑区 -->
@@ -36,6 +36,7 @@
     <!-- 网页展示区 -->
     <webview id="webview" class="webview" allowpopups hidden></webview>
   </div>
+  <script src="../shared/_i18n.js"></script>
   <script src="note.js"></script>
 </body>
 </html>

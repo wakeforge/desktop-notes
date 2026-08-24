@@ -1,8 +1,19 @@
 'use strict';
 
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, app } = require('electron');
+const store = require('../main/store');
+const i18n = require('../shared/locales');
+
+let _locale = i18n.resolveLocale(store.getSettings().language, app.getLocale());
+const _t = (key, params) => i18n.t(_locale, key, params);
 
 contextBridge.exposeInMainWorld('configAPI', {
+  locale: _locale,
+  t: _t,
+  setLocale: (l) => { _locale = l; },
+  formatRelTime: (iso) => i18n.formatRelTime(_locale, iso),
+  formatCount: (n) => i18n.formatCount(_locale, n),
+  onI18nChanged: (cb) => ipcRenderer.on('i18n:changed', (_e, loc) => cb(loc)),
   listNotes: () => ipcRenderer.invoke('notes:list'),
   getNote: (id) => ipcRenderer.invoke('note:get', id),
   createNote: (partial) => ipcRenderer.invoke('note:create', partial),

@@ -4,35 +4,37 @@ const { Tray, Menu, nativeImage, app } = require('electron');
 const path = require('path');
 const wm = require('./windowManager');
 const store = require('./store');
+const i18n = require('../shared/locales');
 
 let tray = null;
 
 const ICON_PATH = path.join(__dirname, '..', '..', 'assets', 'tray.png');
 
 function buildMenu() {
+  const t = (key, params) => i18n.t(i18n.resolveLocale(store.getSettings().language, app.getLocale()), key, params);
   return Menu.buildFromTemplate([
     {
-      label: '新建便签',
+      label: t('tray.newNote'),
       submenu: [
         {
-          label: '新建文本便签',
+          label: t('tray.newTextNote'),
           click: () => createNoteOfType('text')
         },
         {
-          label: '新建网页便签',
+          label: t('tray.newWebNote'),
           click: () => createNoteOfType('web')
         }
       ]
     },
-    { label: '打开主窗口', click: () => wm.showConfigWindow() },
+    { label: t('tray.openMainWindow'), click: () => wm.showConfigWindow() },
     { type: 'separator' },
-    { label: '全部锁定', click: () => { wm.setAllLocked(true); refresh(); } },
-    { label: '全部解锁', click: () => { wm.setAllLocked(false); refresh(); } },
+    { label: t('tray.lockAll'), click: () => { wm.setAllLocked(true); refresh(); } },
+    { label: t('tray.unlockAll'), click: () => { wm.setAllLocked(false); refresh(); } },
     { type: 'separator' },
-    { label: '全部显示', click: () => { wm.setAllHidden(false); refresh(); } },
-    { label: '全部隐藏', click: () => { wm.setAllHidden(true); refresh(); } },
+    { label: t('tray.showAll'), click: () => { wm.setAllHidden(false); refresh(); } },
+    { label: t('tray.hideAll'), click: () => { wm.setAllHidden(true); refresh(); } },
     {
-      label: '退出',
+      label: t('tray.quit'),
       click: () => {
         app.isQuitting = true;
         app.quit();
@@ -60,7 +62,7 @@ function createTray() {
     );
   }
   tray = new Tray(icon);
-  tray.setToolTip('桌面便签');
+  tray.setToolTip(i18n.t(i18n.resolveLocale(store.getSettings().language, app.getLocale()), 'tray.tooltip'));
   tray.setContextMenu(buildMenu());
   tray.on('double-click', () => wm.showConfigWindow());
   return tray;

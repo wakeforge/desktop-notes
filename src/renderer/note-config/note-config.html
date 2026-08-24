@@ -5,13 +5,13 @@
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';" />
   <link rel="stylesheet" href="note-config.css" />
-  <title>配置便签</title>
+  <title data-i18n="noteConfig.title">配置便签</title>
 </head>
 <body>
   <div class="modal">
     <header class="modal-head">
-      <h2>配置便签</h2>
-      <button id="closeBtn" class="close-btn" title="关闭">✕</button>
+      <h2 data-i18n="noteConfig.title">配置便签</h2>
+      <button id="closeBtn" class="close-btn" data-i18n-title="noteConfig.close" title="关闭">✕</button>
     </header>
 
     <div class="modal-body">
@@ -21,11 +21,11 @@
       </div>
 
       <section class="field-group">
-        <label class="field-label">类型</label>
+        <label class="field-label" data-i18n="noteConfig.type">类型</label>
         <div class="type-row">
           <select id="typeSel">
-            <option value="text">文本便签</option>
-            <option value="web">网页便签</option>
+            <option value="text" data-i18n="noteConfig.textNote">文本便签</option>
+            <option value="web" data-i18n="noteConfig.webNote">网页便签</option>
           </select>
         </div>
         <div class="url-row" id="urlRow" hidden>
@@ -34,76 +34,77 @@
       </section>
 
       <section class="field-group">
-        <label class="field-label">所在屏幕</label>
+        <label class="field-label" data-i18n="noteConfig.display">所在屏幕</label>
         <select id="displaySel"></select>
       </section>
 
       <section class="field-group">
-        <label class="field-label">尺寸与坐标</label>
+        <label class="field-label" data-i18n="noteConfig.posSize">尺寸与坐标</label>
         <div class="num-grid">
           <label class="num-cell">X<input type="number" id="posX" /></label>
           <label class="num-cell">Y<input type="number" id="posY" /></label>
-          <label class="num-cell">宽<input type="number" id="w" min="80" /></label>
-          <label class="num-cell">高<input type="number" id="h" min="60" /></label>
+          <label class="num-cell"><span data-i18n="noteConfig.width">宽</span><input type="number" id="w" min="80" /></label>
+          <label class="num-cell"><span data-i18n="noteConfig.height">高</span><input type="number" id="h" min="60" /></label>
         </div>
       </section>
 
       <section class="field-group">
-        <label class="field-label">外观</label>
+        <label class="field-label" data-i18n="noteConfig.appearance">外观</label>
         <div class="appearance-row">
           <label class="color-pick">
             <input type="color" id="bgColor" />
             <span class="swatch" id="bgSwatch"></span>
-            <span class="cap">背景</span>
+            <span class="cap" data-i18n="noteConfig.background">背景</span>
           </label>
           <label class="color-pick">
             <input type="color" id="textColor" />
             <span class="swatch" id="textSwatch"></span>
-            <span class="cap">文字</span>
+            <span class="cap" data-i18n="noteConfig.text">文字</span>
           </label>
-          <label class="num-cell size-cell">字号<input type="number" id="fontSize" min="10" max="72" /></label>
+          <label class="num-cell size-cell"><span data-i18n="noteConfig.fontSize">字号</span><input type="number" id="fontSize" min="10" max="72" /></label>
         </div>
       </section>
 
       <section class="field-group">
-        <label class="field-label">透明度 <span class="val" id="opacityVal">95%</span></label>
+        <label class="field-label" data-i18n="noteConfig.opacity">透明度 <span class="val" id="opacityVal">95%</span></label>
         <input type="range" id="opacity" min="20" max="100" step="1" class="range" />
       </section>
 
       <section class="field-group">
-        <label class="field-label">行为</label>
+        <label class="field-label" data-i18n="noteConfig.behavior">行为</label>
         <div class="switch-row">
           <label class="switch">
             <input type="checkbox" id="hidden" />
             <span class="track"><span class="thumb"></span></span>
-            <span class="cap">隐藏</span>
+            <span class="cap" data-i18n="noteConfig.hide">隐藏</span>
           </label>
           <label class="switch">
             <input type="checkbox" id="alwaysOnTop" />
             <span class="track"><span class="thumb"></span></span>
-            <span class="cap">置顶</span>
+            <span class="cap" data-i18n="noteConfig.alwaysOnTop">置顶</span>
           </label>
           <label class="switch">
             <input type="checkbox" id="locked" />
             <span class="track"><span class="thumb"></span></span>
-            <span class="cap">锁定</span>
+            <span class="cap" data-i18n="noteConfig.lock">锁定</span>
           </label>
         </div>
-        <p class="hint" id="lockHint">锁定后便签点击穿透，仅可在此配置</p>
+        <p class="hint" id="lockHint" data-i18n="noteConfig.lockHint">锁定后便签点击穿透，仅可在此配置</p>
       </section>
     </div>
 
     <footer class="modal-foot">
       <div class="foot-left">
-        <button id="locateBtn" class="ghost-btn">显示位置</button>
-        <button id="resetBtn" class="ghost-btn">重置</button>
+        <button id="locateBtn" class="ghost-btn" data-i18n="noteConfig.locate">显示位置</button>
+        <button id="resetBtn" class="ghost-btn" data-i18n="noteConfig.reset">重置</button>
       </div>
       <div class="foot-right">
-        <button id="delBtn" class="danger-link">删除</button>
+        <button id="delBtn" class="danger-link" data-i18n="noteConfig.delete">删除</button>
       </div>
     </footer>
   </div>
 
+  <script src="../shared/_i18n.js"></script>
   <script src="note-config.js"></script>
 </body>
 </html>

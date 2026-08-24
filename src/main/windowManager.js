@@ -1,8 +1,16 @@
 'use strict';
 
-const { BrowserWindow, screen } = require('electron');
+const { BrowserWindow, screen, app } = require('electron');
 const path = require('path');
 const store = require('./store');
+const i18n = require('../shared/locales');
+
+function currentLocale() {
+  return i18n.resolveLocale(store.getSettings().language, app.getLocale());
+}
+function t(key, params) {
+  return i18n.t(currentLocale(), key, params);
+}
 
 const noteWindows = new Map();
 let configWindow = null;
@@ -168,7 +176,7 @@ function createConfigWindow() {
     height: 640,
     minWidth: 680,
     minHeight: 480,
-    title: '桌面便签',
+    title: t('app.name'),
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, '..', 'preload', 'config-preload.js'),
@@ -199,6 +207,23 @@ function broadcastConfig() {
     if (win && !win.isDestroyed()) win.webContents.send('note-config:refresh');
     else noteConfigWindows.delete(id);
   }
+}
+
+// 语言切换后：更新所有窗口标题，并通知所有渲染层重新翻译
+function broadcastI18n() {
+  const loc = currentLocale();
+  const set = (w, title) => { if (w && !w.isDestroyed()) w.setTitle(title); };
+  set(configWindow, i18n.t(loc, 'app.name'));
+  set(globalConfigWindow, i18n.t(loc, 'globalConfig.title'));
+  for (const [id, win] of noteConfigWindows) {
+    if (win && !win.isDestroyed()) win.setTitle(i18n.t(loc, 'noteConfig.title'));
+    else noteConfigWindows.delete(id);
+  }
+  const send = (w) => { if (w && !w.isDestroyed()) w.webContents.send('i18n:changed', loc); };
+  send(configWindow);
+  send(globalConfigWindow);
+  for (const w of noteConfigWindows.values()) send(w);
+  for (const w of noteWindows.values()) send(w);
 }
 
 function destroyConfigForQuit() {
@@ -237,7 +262,7 @@ function openNoteConfigWindow(noteId) {
     resizable: true,
     minimizable: false,
     maximizable: false,
-    title: '配置便签',
+    title: t('noteConfig.title'),
     parent: parentWin,
     modal: parentWin !== null,
     autoHideMenuBar: true,
@@ -284,7 +309,7 @@ function openGlobalConfigWindow() {
     resizable: true,
     minimizable: false,
     maximizable: false,
-    title: '全局配置',
+    title: t('globalConfig.title'),
     parent: parentWin,
     modal: parentWin !== null,
     autoHideMenuBar: true,
@@ -361,6 +386,7 @@ module.exports = {
   createConfigWindow,
   showConfigWindow,
   broadcastConfig,
+  broadcastI18n,
   destroyConfigForQuit,
   openNoteConfigWindow,
   closeNoteConfigForSender,

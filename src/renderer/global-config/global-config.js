@@ -1,10 +1,12 @@
 'use strict';
 
 const api = window.globalConfigAPI;
+const tr = window.globalConfigAPI.t;
 
 const els = {
   closeBtn: document.getElementById('closeBtn'),
   launchOnStartup: document.getElementById('launchOnStartup'),
+  langSel: document.getElementById('langSel'),
   themeSeg: document.getElementById('themeSeg'),
   fontSize: document.getElementById('defaultFontSize'),
   opacity: document.getElementById('defaultOpacity'),
@@ -16,6 +18,22 @@ const els = {
 };
 
 /* ---------- 主题跟随（nativeTheme.themeSource 驱动 prefers-color-scheme） ---------- */
+
+let currentLang = 'auto';
+
+function fillLangSel() {
+  els.langSel.innerHTML = '';
+  const mk = (val, label) => {
+    const o = document.createElement('option');
+    o.value = val;
+    o.textContent = label;
+    return o;
+  };
+  els.langSel.appendChild(mk('auto', tr('globalConfig.langAuto')));
+  for (const loc of api.locales) {
+    els.langSel.appendChild(mk(loc, api.localeLabels[loc]));
+  }
+}
 
 const themeMq = window.matchMedia('(prefers-color-scheme: dark)');
 function applyPageTheme() {
@@ -33,6 +51,9 @@ async function load() {
   const s = await api.getSettings();
   els.launchOnStartup.checked = s.launchOnStartup === true;
   setThemeSeg(s.theme || 'system');
+  currentLang = s.language || 'auto';
+  fillLangSel();
+  els.langSel.value = currentLang;
   els.fontSize.value = s.defaultFontSize || 14;
   const op = Math.round((s.defaultOpacity ?? 0.95) * 100);
   els.opacity.value = op;
@@ -65,6 +86,12 @@ function toHex(c) {
 /* ---------- 事件（即时保存） ---------- */
 
 els.closeBtn.addEventListener('click', () => api.closeWindow());
+
+els.langSel.addEventListener('change', () => {
+  if (loading) return;
+  currentLang = els.langSel.value;
+  api.updateSettings({ language: currentLang });
+});
 
 els.launchOnStartup.addEventListener('change', () => {
   if (loading) return;
@@ -102,6 +129,15 @@ els.textColor.addEventListener('change', () => {
   if (loading) return;
   els.textSwatch.style.background = els.textColor.value;
   api.updateSettings({ defaultTextColor: els.textColor.value });
+});
+
+// 静态文案初始翻译 + 语言切换时重渲染
+applyI18n(tr);
+api.onI18nChanged((loc) => {
+  api.setLocale(loc);
+  applyI18n(tr);
+  fillLangSel();
+  els.langSel.value = currentLang;
 });
 
 load();

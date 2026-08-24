@@ -5,20 +5,20 @@
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';" />
   <link rel="stylesheet" href="config.css" />
-  <title>桌面便签</title>
+  <title data-i18n="app.name">桌面便签</title>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
       <span class="logo">📋</span>
       <div class="brand-text">
-        <h1>桌面便签</h1>
-        <span class="subtitle">主窗口</span>
+        <h1 data-i18n="app.name">桌面便签</h1>
+        <span class="subtitle" data-i18n="config.subtitle">主窗口</span>
       </div>
     </div>
     <div class="topbar-actions">
-      <button id="calibrateBtn" class="ghost-btn" title="重新校准所有便签到屏幕可见区">校准</button>
-      <button id="globalCfgBtn" class="icon-btn" title="全局配置" aria-label="全局配置">
+      <button id="calibrateBtn" class="ghost-btn" data-i18n="config.calibrate" data-i18n-title="config.calibrateTip" title="重新校准所有便签到屏幕可见区">校准</button>
+      <button id="globalCfgBtn" class="icon-btn" data-i18n-title="config.globalConfig" data-i18n-aria="config.globalConfig" title="全局配置">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"/>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -29,49 +29,50 @@
 
   <div class="toolbar">
     <div class="new-wrap">
-      <button id="newBtn" class="primary">+ 新建便签 <span class="caret">▾</span></button>
+      <button id="newBtn" class="primary" data-i18n="config.newNote">+ 新建便签 <span class="caret">▾</span></button>
       <div id="newMenu" class="dropdown" hidden>
-        <button data-type="text">新建文本便签</button>
-        <button data-type="web">新建网页便签</button>
+        <button data-type="text" data-i18n="config.newTextNote">新建文本便签</button>
+        <button data-type="web" data-i18n="config.newWebNote">新建网页便签</button>
       </div>
     </div>
     <div class="search-wrap">
       <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="search" id="searchInput" placeholder="搜索便签…" />
+      <input type="search" id="searchInput" data-i18n-placeholder="config.searchPlaceholder" placeholder="搜索便签…" />
     </div>
     <div class="sort-wrap">
       <select id="sortSel" title="排序方式">
-        <option value="updated">最近更新</option>
-        <option value="created">创建时间</option>
-        <option value="size">字号</option>
+        <option value="updated" data-i18n="config.sortUpdated">最近更新</option>
+        <option value="created" data-i18n="config.sortCreated">创建时间</option>
+        <option value="size" data-i18n="config.sortSize">字号</option>
       </select>
     </div>
   </div>
 
   <main class="content">
     <div class="content-head">
-      <h2>我的便签</h2>
+      <h2 data-i18n="config.myNotes">我的便签</h2>
       <span id="countBadge" class="count-badge">0</span>
     </div>
     <div id="cardGrid" class="card-grid"></div>
     <div id="emptyState" class="empty-state" hidden>
       <div class="empty-icon">📋</div>
-      <p class="empty-title">还没有便签</p>
-      <p class="empty-hint">点上方「+ 新建便签」开始</p>
+      <p class="empty-title" data-i18n="config.emptyTitle">还没有便签</p>
+      <p class="empty-hint" data-i18n="config.emptyHint">点上方「+ 新建便签」开始</p>
     </div>
   </main>
 
   <!-- 卡片右键菜单 -->
   <div id="cardMenu" class="card-menu" hidden>
-    <button data-act="edit">配置便签</button>
-    <button data-act="dup">复制</button>
-    <button data-act="toggle-hide">隐藏 / 显示</button>
-    <button data-act="toggle-lock">锁定 / 解锁</button>
-    <button data-act="del" class="danger">删除</button>
+    <button data-act="edit" data-i18n="config.menuConfig">配置便签</button>
+    <button data-act="dup" data-i18n="config.menuDup">复制</button>
+    <button data-act="toggle-hide" data-i18n="config.menuToggleHide">隐藏 / 显示</button>
+    <button data-act="toggle-lock" data-i18n="config.menuToggleLock">锁定 / 解锁</button>
+    <button data-act="del" class="danger" data-i18n="config.menuDelete">删除</button>
   </div>
 
+  <script src="../shared/_i18n.js"></script>
   <script src="config.js"></script>
 </body>
 </html>
