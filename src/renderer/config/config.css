@@ -74,26 +74,8 @@ button.primary:hover { background: var(--primary-hover); border-color: var(--pri
 button.icon-btn { padding: 6px; border-color: transparent; background: transparent; color: var(--text-2); display: inline-flex; align-items: center; justify-content: center; }
 button.icon-btn:hover { background: var(--hover); color: var(--text); }
 
-/* ---- topbar ---- */
+/* ---- topbar（新建 / 搜索 / 排序 / 全局配置） ---- */
 .topbar {
-  flex: 0 0 auto;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
-.brand { display: flex; align-items: center; gap: 10px; }
-.brand .logo { font-size: 22px; line-height: 1; }
-.brand-text { display: flex; flex-direction: column; line-height: 1.2; }
-.brand-text h1 { font-size: 17px; font-weight: 700; letter-spacing: .5px; }
-.brand-text .subtitle { font-size: 11px; color: var(--text-3); margin-top: 2px; }
-.topbar-actions { display: flex; align-items: center; gap: 6px; }
-
-/* ---- toolbar ---- */
-.toolbar {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
@@ -102,7 +84,9 @@ button.icon-btn:hover { background: var(--hover); color: var(--text); }
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
-.new-wrap { position: relative; }
+.topbar-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+
+.new-wrap { position: relative; flex: 0 0 auto; }
 .dropdown {
   position: absolute;
   top: calc(100% + 6px);
@@ -134,8 +118,7 @@ button.icon-btn:hover { background: var(--hover); color: var(--text); }
   position: relative;
   display: flex;
   align-items: center;
-}
-.search-icon {
+}.search-icon {
   position: absolute;
   left: 10px;
   color: var(--text-3);
@@ -152,7 +135,7 @@ button.icon-btn:hover { background: var(--hover); color: var(--text); }
   transition: border-color .15s, background .15s;
 }
 .search-wrap input:focus { border-color: var(--primary); background: var(--surface); }
-.sort-wrap { margin-left: auto; }
+.sort-wrap { flex: 0 0 auto; }
 .sort-wrap select {
   padding: 6px 10px;
   border: 1px solid var(--border-strong);

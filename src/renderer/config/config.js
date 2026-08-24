@@ -77,7 +77,6 @@ function filteredNotes() {
   }
   arr.sort((a, b) => {
     if (sortMode === 'created') return new Date(b.createdAt) - new Date(a.createdAt);
-    if (sortMode === 'size') return (b.fontSize || 0) - (a.fontSize || 0);
     return new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt);
   });
   return arr;
