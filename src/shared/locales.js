@@ -657,32 +657,7 @@ function formatCount(locale, n) {
   return t(locale, 'config.chars', { n });
 }
 
-/**
- * 渲染层共用的 i18n DOM 辅助（须在主世界执行，依赖 document）。
- * 经 preload 的 contextBridge 暴露为 api.applyI18n，避免被 CSP(file:// 跨目录)拦截。
- *
- * 用法：
- *   <span data-i18n="config.myNotes"></span>                   → textContent
- *   <button data-i18n-title="config.calibrateTip"></button>    → title
- *   <input data-i18n-placeholder="..." />                       → placeholder
- *   <button data-i18n-aria="..."></button>                     → aria-label
- */
-function applyI18n(t, root) {
-  root = root || document;
-  if (!t) return;
-  root.querySelectorAll('[data-i18n]').forEach((el) => {
-    el.textContent = t(el.getAttribute('data-i18n'));
-  });
-  root.querySelectorAll('[data-i18n-title]').forEach((el) => {
-    el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
-  });
-  root.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
-    el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
-  });
-  root.querySelectorAll('[data-i18n-aria]').forEach((el) => {
-    el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
-  });
-}
+// 注意：DOM 翻译辅助 applyI18n 内联在各 preload 中（沙箱 preload 无法 require 本文件）。
 
 module.exports = {
   LOCALES,
@@ -691,6 +666,5 @@ module.exports = {
   resolveLocale,
   t,
   formatRelTime,
-  formatCount,
-  applyI18n
+  formatCount
 };

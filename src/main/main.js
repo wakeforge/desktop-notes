@@ -214,6 +214,18 @@ ipcMain.handle('settings:update', (_e, patch) => {
 // 当前生效主题（'system' 时解析为实际的 light/dark，供渲染层初始化用）
 ipcMain.handle('theme:effective', () => nativeTheme.shouldUseDarkColors ? 'dark' : 'light');
 
+/* ---------------- IPC: i18n（沙箱 preload 经 sendSync 委托主进程） ----------------
+ * 沙箱 preload 不能 require 任意文件、也没有 app，故语言解析与翻译全部在主进程完成。
+ * currentLocale() 每次现算（读 store 设置），语言切换后自动生效，无需维护缓存。 */
+
+ipcMain.on('i18n:get', (e) => { e.returnValue = currentLocale(); });
+ipcMain.on('i18n:t', (e, key, params) => { e.returnValue = i18n.t(currentLocale(), key, params); });
+ipcMain.on('i18n:reltime', (e, iso) => { e.returnValue = i18n.formatRelTime(currentLocale(), iso); });
+ipcMain.on('i18n:count', (e, n) => { e.returnValue = i18n.formatCount(currentLocale(), n); });
+ipcMain.on('i18n:meta', (e) => {
+  e.returnValue = { locales: i18n.LOCALES, labels: i18n.LOCALE_LABELS };
+});
+
 /* ---------------- IPC: 显示器信息 ---------------- */
 
 ipcMain.handle('displays:list', () => {

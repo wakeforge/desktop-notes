@@ -251,9 +251,9 @@ window.noteAPI.onData((data) => {
 
 window.noteAPI.onI18nChanged((loc) => {
   window.noteAPI.setLocale(loc);
-  window.noteAPI.applyI18n(window.noteAPI.t);
+  window.noteAPI.applyI18n();
   setLockUI(locked);
 });
 
-window.noteAPI.applyI18n(window.noteAPI.t);
+window.noteAPI.applyI18n();
 init();

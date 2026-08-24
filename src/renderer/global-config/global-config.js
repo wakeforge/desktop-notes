@@ -132,10 +132,10 @@ els.textColor.addEventListener('change', () => {
 });
 
 // 静态文案初始翻译 + 语言切换时重渲染
-api.applyI18n(api.t);
+api.applyI18n();
 api.onI18nChanged((loc) => {
   api.setLocale(loc);
-  api.applyI18n(api.t);
+  api.applyI18n();
   fillLangSel();
   els.langSel.value = currentLang;
 });
