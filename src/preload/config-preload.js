@@ -50,5 +50,7 @@ contextBridge.exposeInMainWorld('configAPI', {
   openNoteConfig: (id) => ipcRenderer.invoke('note-config:open', id),
   // 打开全局配置弹窗
   openGlobalConfig: () => ipcRenderer.invoke('global-config:open'),
+  // 打开关于弹窗
+  openAbout: () => ipcRenderer.invoke('about:open'),
   onRefresh: (cb) => ipcRenderer.on('config:refresh', () => cb())
 });
