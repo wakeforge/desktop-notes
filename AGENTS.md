@@ -1,7 +1,7 @@
 # AGENTS.md — 桌面便签（desktop-notes）
 
 > 面向 AI 协作者的项目说明。描述当前实现的架构、模块职责、数据模型与构建方式。
-> 最后更新：2026-08-23（配置 UI 重构：主窗卡片化 + 便签详情弹窗 + 全局配置弹窗 + 主题，见第 3.1 节）。
+> 最后更新：2026-08-29（新增「关于」弹窗与外链打开能力，见第 3.1 / 4 / 9 节）。
 
 ## 1. 项目概述
 
@@ -16,7 +16,7 @@
 
 | 文件 | 职责 |
 |---|---|
-| `main.js` | 入口。单实例锁（`requestSingleInstanceLock`）、`applyLaunchOnStartup`、就绪后恢复笔记+建托盘、全部 IPC 处理器（`data:*`、`notes:*`、`note:*`、`settings:*`、`displays:*`、`config:open`）。 |
+| `main.js` | 入口。单实例锁（`requestSingleInstanceLock`）、`applyLaunchOnStartup`、就绪后恢复笔记+建托盘、全部 IPC 处理器（`data:*`、`notes:*`、`note:*`、`settings:*`、`displays:*`、`config:open`、`app:*`、`about:*`）。 |
 | `windowManager.js` | 创建/销毁/重载笔记窗口与配置窗口；锁态切换（`setIgnoreMouseEvents`）；多屏定位 `clampToScreen`（按虚拟桌面绝对坐标 absX/absY 落位，越界兜底主屏）。 |
 | `store.js` | 数据层。读写 `notes.json`（位于 `app.getPath('userData')`），内存缓存 + 落盘。 |
 | `tray.js` | 系统托盘图标 + 右键菜单（新建 / 打开配置 / 全部锁定 / 全部解锁 / 全部显示 / 全部隐藏 / 退出）。 |
@@ -33,6 +33,7 @@
 
 - **便签详情弹窗**（`src/renderer/note-config/`）：独立模态 BrowserWindow（parent=主窗，URL 带 `?id=`），每便签一个、复用聚焦。配置项：类型（文本/网页）、所在屏幕、坐标 X·Y·宽·高、背景/文字色、字号、透明度、隐藏/置顶/锁定开关；操作：显示位置（闪烁定位）/ 重置 / 删除 / 立即设置全屏。改动防抖 250ms 经 `note:update` 等既有 IPC 回写。
 - **全局配置弹窗**（`src/renderer/global-config/`）：单例模态 BrowserWindow。配置项：开机启动、主题、默认字号、默认透明度、默认背景/文字色。即时保存（`settings:update`）。
+- **关于弹窗**（`src/renderer/about/`，2026-08-29 新增）：单例模态 BrowserWindow，入口在配置主窗顶栏（齿轮左侧的 ⓘ 图标）。展示程序名称（`app.name` 译文 + `desktop-notes`）、版本（`app.getVersion()` 读 `package.json`）、发布时间（`package.json` 的 `releaseDate` 字段，发版时手改）、介绍网站与 GitHub 两个外链、运行时版本（Electron / Chromium / Node）、版权行（`package.json` 的 `copyright` + `license`）。数据由主进程 `app:info` IPC 提供；点击链接走 `app:open-external`（主进程 `shell.openExternal`，只放行 http/https）；Esc 或窗口关闭按钮退出。
 - **主题**：`settings.theme` ∈ 'light' | 'dark' | 'system'（默认 system）。主进程 `nativeTheme.themeSource` 驱动，渲染层监听 `matchMedia('prefers-color-scheme')` 切换 `html[data-theme]`，CSS 变量整体换肤，所有配置窗口即时生效。便签窗口本体不参与主题（颜色由每条便签的 bgColor/textColor 决定）。
 
 ## 4. 渲染层关键文件
@@ -41,7 +42,8 @@
 - `src/renderer/config/config.js`：卡片网格渲染、搜索/排序、卡片右键菜单（配置/复制/隐藏/锁定/删除）、新建下拉、全局配置与详情弹窗入口。
 - `src/renderer/note-config/note-config.js`：便签详情弹窗逻辑（表单填充 + 防抖保存，坐标用「屏幕下拉 + 屏内相对 X·Y」换算虚拟桌面绝对坐标 absX/absY）。
 - `src/renderer/global-config/global-config.js`：全局配置弹窗逻辑（即时保存）。
-- `src/preload/config-preload.js` / `note-preload.js` / `note-config-preload.js` / `global-config-preload.js`：`contextBridge` 暴露 `configAPI` / `noteAPI` / `noteConfigAPI` / `globalConfigAPI`，内部全部走 `ipcRenderer.invoke` / `ipcRenderer.on`。
+- `src/renderer/about/about.js`：关于弹窗逻辑（拉 `app:info` 填充、点击外链、Esc 关闭、语言切换重填）。
+- `src/preload/config-preload.js` / `note-preload.js` / `note-config-preload.js` / `global-config-preload.js` / `about-preload.js`：`contextBridge` 暴露 `configAPI` / `noteAPI` / `noteConfigAPI` / `globalConfigAPI` / `aboutAPI`，内部全部走 `ipcRenderer.invoke` / `ipcRenderer.on`（i18n 用 `sendSync` 委托主进程）。
 
 ## 5. 数据模型（`notes.json`，位于 `%APPDATA%/desktop-notes/notes.json`）
 
@@ -128,6 +130,8 @@ app.whenReady()
 - 富文本改动必须保持 `note.js` 的 `sanitize()` 白名单与 XSS 防护。
 - 新增窗口属性/笔记字段时，同步更新 `store.js` 的 `createNote` 默认值与 `notes.json` 结构说明。
 - 涉及开机自启的改动，注意 `applyLaunchOnStartup` 与 Windows 注册表启动项的联动。
+- 渲染层需要打开外部网页时，必须走 `app:open-external`（主进程 `shell.openExternal`）**，不要用 `<a target="_blank">` 或 `window.open`**（Electron 下不会生效）；主进程侧只放行 `http/https` 前缀，别放宽协议白名单。
+- 发版时需同步 `package.json` 的 `version` 与 `releaseDate`（关于弹窗直接读这两个字段，`releaseDate` 目前靠手工维护）。
 
 ## 10. GIT 工作流规则（强制）
 

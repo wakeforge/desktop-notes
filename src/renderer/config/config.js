@@ -21,6 +21,7 @@ const els = {
   newMenu: document.getElementById('newMenu'),
   search: document.getElementById('searchInput'),
   sort: document.getElementById('sortSel'),
+  about: document.getElementById('aboutBtn'),
   globalCfg: document.getElementById('globalCfgBtn'),
   cardMenu: document.getElementById('cardMenu')
 };
@@ -248,6 +249,11 @@ els.sort.addEventListener('change', () => {
 // 全局配置：打开独立弹窗
 els.globalCfg.addEventListener('click', () => {
   api.openGlobalConfig();
+});
+
+// 关于：打开独立弹窗
+els.about.addEventListener('click', () => {
+  api.openAbout();
 });
 
 api.onRefresh(() => refresh());

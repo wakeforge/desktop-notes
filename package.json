@@ -1,6 +1,7 @@
 {
   "name": "desktop-notes",
   "version": "1.0.2",
+  "releaseDate": "2026-08-25",
   "description": "桌面便签：笔记嵌入桌面、点击穿透、只能由配置窗口管理",
   "main": "src/main/main.js",
   "author": "wake",

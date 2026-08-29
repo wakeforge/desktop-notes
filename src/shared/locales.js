@@ -125,6 +125,12 @@ const messages = {
     'globalConfig.language': '语言',
     'globalConfig.langAuto': '自动（跟随系统）',
 
+    'about.title': '关于',
+    'about.version': '版本',
+    'about.releaseDate': '发布时间',
+    'about.website': '介绍网站',
+    'about.github': 'GitHub',
+
     'display.label': '屏幕 {n}',
     'display.primary': '（主）'
   },
@@ -232,6 +238,12 @@ const messages = {
     'globalConfig.title': '全域設定',
     'globalConfig.language': '語言',
     'globalConfig.langAuto': '自動（跟隨系統）',
+
+    'about.title': '關於',
+    'about.version': '版本',
+    'about.releaseDate': '發布時間',
+    'about.website': '介紹網站',
+    'about.github': 'GitHub',
 
     'display.label': '螢幕 {n}',
     'display.primary': '（主）'
@@ -341,6 +353,12 @@ const messages = {
     'globalConfig.language': 'Language',
     'globalConfig.langAuto': 'Auto (follow system)',
 
+    'about.title': 'About',
+    'about.version': 'Version',
+    'about.releaseDate': 'Released',
+    'about.website': 'Website',
+    'about.github': 'GitHub',
+
     'display.label': 'Screen {n}',
     'display.primary': '(primary)'
   },
@@ -449,6 +467,12 @@ const messages = {
     'globalConfig.language': '言語',
     'globalConfig.langAuto': '自動（システムに従う）',
 
+    'about.title': 'このアプリについて',
+    'about.version': 'バージョン',
+    'about.releaseDate': 'リリース日',
+    'about.website': '紹介サイト',
+    'about.github': 'GitHub',
+
     'display.label': '画面 {n}',
     'display.primary': '（メイン）'
   },
@@ -556,6 +580,12 @@ const messages = {
     'globalConfig.title': '전체 설정',
     'globalConfig.language': '언어',
     'globalConfig.langAuto': '자동 (시스템 따르기)',
+
+    'about.title': '정보',
+    'about.version': '버전',
+    'about.releaseDate': '출시일',
+    'about.website': '소개 사이트',
+    'about.github': 'GitHub',
 
     'display.label': '화면 {n}',
     'display.primary': '(주)'

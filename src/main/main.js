@@ -2,7 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { app, ipcMain, screen, protocol, clipboard, dialog, nativeTheme } = require('electron');
+const { app, ipcMain, screen, protocol, clipboard, dialog, nativeTheme, shell } = require('electron');
+const pkg = require('../../package.json');
 const store = require('./store');
 const wm = require('./windowManager');
 const trayModule = require('./tray');
@@ -284,6 +285,51 @@ ipcMain.on('note-config:close', (e) => {
 ipcMain.handle('global-config:open', () => {
   wm.openGlobalConfigWindow();
   return true;
+});
+
+/* ---------------- IPC: 关于 / 外部链接 ---------------- */
+
+// 关于弹窗里展示的应用元信息（版本读 package.json，随发版自动更新）
+const APP_LINKS = {
+  website: 'https://wakeforge.github.io/desktop-notes',
+  github: 'https://github.com/wakeforge/desktop-notes'
+};
+
+ipcMain.handle('app:info', () => ({
+  name: 'desktop-notes',
+  displayName: i18n.t(currentLocale(), 'app.name'),
+  version: app.getVersion(),
+  releaseDate: pkg.releaseDate || '',
+  copyright: pkg.copyright || '',
+  license: pkg.license || '',
+  website: APP_LINKS.website,
+  github: APP_LINKS.github,
+  electron: process.versions.electron,
+  chrome: process.versions.chrome,
+  node: process.versions.node
+}));
+
+// 打开关于弹窗
+ipcMain.handle('about:open', () => {
+  wm.openAboutWindow();
+  return true;
+});
+
+// 关于弹窗自身请求关闭
+ipcMain.on('about:close', (e) => {
+  wm.closeAboutForSender(e.sender);
+});
+
+// 用系统默认浏览器打开外链（只放行 http/https，杜绝 file: 等协议）
+ipcMain.handle('app:open-external', async (_e, url) => {
+  if (typeof url !== 'string' || !/^https?:\/\//i.test(url)) return false;
+  try {
+    await shell.openExternal(url);
+    return true;
+  } catch (err) {
+    console.error('[about] openExternal failed', err);
+    return false;
+  }
 });
 
 // 全局配置弹窗自身请求关闭

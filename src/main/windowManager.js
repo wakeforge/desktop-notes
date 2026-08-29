@@ -16,6 +16,7 @@ const noteWindows = new Map();
 let configWindow = null;
 const noteConfigWindows = new Map(); // noteId -> 详情弹窗 BrowserWindow
 let globalConfigWindow = null;       // 全局配置弹窗（单例）
+let aboutWindow = null;              // 关于弹窗（单例）
 
 // 笔记位置存的是虚拟桌面绝对坐标 (absX, absY)，直接落位，不依赖 display id。
 // 若绝对坐标已越界（拔屏/改分辨率），用 getDisplayMatching 兜底回主屏工作区。
@@ -215,6 +216,7 @@ function broadcastI18n() {
   const set = (w, title) => { if (w && !w.isDestroyed()) w.setTitle(title); };
   set(configWindow, i18n.t(loc, 'app.name'));
   set(globalConfigWindow, i18n.t(loc, 'globalConfig.title'));
+  set(aboutWindow, i18n.t(loc, 'about.title'));
   for (const [id, win] of noteConfigWindows) {
     if (win && !win.isDestroyed()) win.setTitle(i18n.t(loc, 'noteConfig.title'));
     else noteConfigWindows.delete(id);
@@ -222,6 +224,7 @@ function broadcastI18n() {
   const send = (w) => { if (w && !w.isDestroyed()) w.webContents.send('i18n:changed', loc); };
   send(configWindow);
   send(globalConfigWindow);
+  send(aboutWindow);
   for (const w of noteConfigWindows.values()) send(w);
   for (const w of noteWindows.values()) send(w);
 }
@@ -242,6 +245,12 @@ function destroyConfigForQuit() {
     globalConfigWindow.destroy();
   }
   globalConfigWindow = null;
+  // 关闭关于弹窗
+  if (aboutWindow && !aboutWindow.isDestroyed()) {
+    aboutWindow.removeAllListeners('closed');
+    aboutWindow.destroy();
+  }
+  aboutWindow = null;
 }
 
 /* ---------------- 便签详情弹窗 ---------------- */
@@ -326,6 +335,49 @@ function openGlobalConfigWindow() {
   return globalConfigWindow;
 }
 
+/* ---------------- 关于弹窗 ---------------- */
+
+function openAboutWindow() {
+  if (aboutWindow && !aboutWindow.isDestroyed()) {
+    aboutWindow.show();
+    aboutWindow.focus();
+    return aboutWindow;
+  }
+  const parentWin = (configWindow && !configWindow.isDestroyed()) ? configWindow : null;
+  aboutWindow = new BrowserWindow({
+    width: 400,
+    height: 480,
+    minWidth: 400,
+    minHeight: 480,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    fullscreenable: false,
+    title: t('about.title'),
+    parent: parentWin,
+    modal: parentWin !== null,
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: path.join(__dirname, '..', 'preload', 'about-preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  });
+  aboutWindow.loadFile(path.join(__dirname, '..', 'renderer', 'about', 'about.html'));
+  aboutWindow.on('closed', () => {
+    aboutWindow = null;
+  });
+  return aboutWindow;
+}
+
+// 关于弹窗自身请求关闭
+function closeAboutForSender(sender) {
+  if (aboutWindow && aboutWindow === sender) {
+    aboutWindow.close();
+    aboutWindow = null;
+  }
+}
+
 /* ---------------- 定位 / 全屏 / 校准 ---------------- */
 
 // 让桌面便签闪一下，方便用户在桌面找到它
@@ -364,5 +416,7 @@ module.exports = {
   openNoteConfigWindow,
   closeNoteConfigForSender,
   openGlobalConfigWindow,
+  openAboutWindow,
+  closeAboutForSender,
   locateNote
 };
